@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,15 +20,18 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zen.login.R
+import kotlinx.coroutines.launch
 
 //@Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -46,16 +50,33 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
     val email :String by viewModel.email.observeAsState(initial = "")
     val password :String by viewModel.password.observeAsState(initial = "")
     val loginEnabled :Boolean by viewModel.loginEnabled.observeAsState(initial = false)
-    Column(modifier = modifier) {
-        HeaderImage(Modifier.align(Alignment.CenterHorizontally))
-        Spacer(modifier = Modifier.padding(16.dp))
-        EmailField(email) { viewModel.onLoginChanged(it, password) }
-        Spacer(modifier = Modifier.padding(8.dp))
-        PasswordField(password) { viewModel.onLoginChanged(email, it) }
-        Spacer(modifier = Modifier.padding(8.dp))
-        ForgotPassword(Modifier.align(Alignment.End))
-        Spacer(modifier = Modifier.padding(8.dp))
-        LoginButton(loginEnabled) { viewModel.onLoginClicked() }
+    val isLoading :Boolean by viewModel.isLoading.observeAsState(initial = false)
+    val coroutineScope = rememberCoroutineScope()
+
+    if (isLoading) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
+        }
+    } else {
+        Column(modifier = modifier) {
+            HeaderImage(Modifier.align(Alignment.CenterHorizontally))
+            Spacer(modifier = Modifier.padding(16.dp))
+            EmailField(email) { viewModel.onLoginChanged(it, password) }
+            Spacer(modifier = Modifier.padding(8.dp))
+            PasswordField(password) { viewModel.onLoginChanged(email, it) }
+            Spacer(modifier = Modifier.padding(8.dp))
+            ForgotPassword(Modifier.align(Alignment.End))
+            Spacer(modifier = Modifier.padding(8.dp))
+            LoginButton(loginEnabled) {
+                coroutineScope.launch {
+                    viewModel.onLoginClicked()
+                }
+            }
+        }
     }
 }
 
@@ -68,7 +89,7 @@ fun LoginButton(loginEnabled: Boolean, onLoginClicked: () -> Unit) {
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFF3F51B5),
-            disabledContainerColor = Color(0xFFFFFFFF),
+            disabledContainerColor = Color(0xFF47535E),
             contentColor = Color.White,
             disabledContentColor = Color.White
         ),
@@ -110,7 +131,8 @@ fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
             containerColor = Color(0xFF3F51B5),
             //focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
-        )
+        ),
+        visualTransformation = PasswordVisualTransformation('*')
     )
 }
 
@@ -131,7 +153,7 @@ fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFF000000),
-            containerColor = Color(0xFF2E82E9),
+            containerColor = Color(0xFF3F51B5),
             //focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         )
