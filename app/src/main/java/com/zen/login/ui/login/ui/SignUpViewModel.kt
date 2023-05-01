@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.delay
 
 class SignUpViewModel : ViewModel(){
     private val _email = MutableLiveData<String>()
@@ -18,8 +19,14 @@ class SignUpViewModel : ViewModel(){
     private val _category = MutableLiveData<String>()
     val category: LiveData<String> = _category
 
+    private val _categories = MutableLiveData<List<String>>()
+    val categories: LiveData<List<String>> = _categories
+
     private val _isContinueEnabled = MutableLiveData<Boolean>()
     val isContinueEnabled: LiveData<Boolean> = _isContinueEnabled
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private fun isValidEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -45,5 +52,11 @@ class SignUpViewModel : ViewModel(){
         _category.value = category
         _isContinueEnabled.value = isValidEmail(email) && isValidPassword(password) &&
                 isValidConfirmPassword(password, confirmPassword) && isValidCategory(category)
+    }
+
+    suspend fun onContinueClicked() {
+        _isLoading.value = true
+        delay(2000)
+        _isLoading.value = false
     }
 }

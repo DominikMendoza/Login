@@ -88,7 +88,7 @@ fun LoginButton(loginEnabled: Boolean, onLoginClicked: () -> Unit) {
             .fillMaxWidth()
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF3F51B5),
+            containerColor = Color(0xFF02AAEE),
             disabledContainerColor = Color(0xFF47535E),
             contentColor = Color.White,
             disabledContentColor = Color.White
@@ -107,7 +107,7 @@ fun ForgotPassword(modifier: Modifier) {
         modifier = modifier.clickable {  },
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
-        color = Color(0xFF3F51B5)
+        color = Color(0xFF02AAEE)
     )
 }
 
@@ -120,7 +120,8 @@ fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
-                text = "Password"
+                text = "Password",
+                color = Color.Black
             )
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -128,7 +129,7 @@ fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFF000000),
-            containerColor = Color(0xFF3F51B5),
+            containerColor = Color(0xFF02AAEE),
             //focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
@@ -145,7 +146,8 @@ fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
-                text = "Email"
+                text = "Email",
+                color = Color.Black
             )
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -153,7 +155,7 @@ fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFF000000),
-            containerColor = Color(0xFF3F51B5),
+            containerColor = Color(0xFF02AAEE),
             //focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         )
