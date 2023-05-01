@@ -17,48 +17,52 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zen.login.R
 
-@Preview(showBackground = true, showSystemUi = true)
+//@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(viewModel: LoginViewModel) {
     Box(
         Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Login(Modifier.align(Alignment.Center))
+        Login(Modifier.align(Alignment.Center), viewModel)
     }
 }
 
 @Composable
-fun Login(modifier: Modifier) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel) {
+    val email :String by viewModel.email.observeAsState(initial = "")
+    val password :String by viewModel.password.observeAsState(initial = "")
+    val loginEnabled :Boolean by viewModel.loginEnabled.observeAsState(initial = false)
     Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(16.dp))
-        EmailField()
+        EmailField(email) { viewModel.onLoginChanged(it, password) }
         Spacer(modifier = Modifier.padding(8.dp))
-        PasswordField()
+        PasswordField(password) { viewModel.onLoginChanged(email, it) }
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.padding(8.dp))
-        LoginButton()
+        LoginButton(loginEnabled) { viewModel.onLoginClicked() }
     }
 }
 
 @Composable
-fun LoginButton() {
+fun LoginButton(loginEnabled: Boolean, onLoginClicked: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { onLoginClicked() },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
@@ -67,7 +71,8 @@ fun LoginButton() {
             disabledContainerColor = Color(0xFFFFFFFF),
             contentColor = Color.White,
             disabledContentColor = Color.White
-        )
+        ),
+        enabled = loginEnabled
 
     ) {
         Text(text = "Log in")
@@ -87,10 +92,10 @@ fun ForgotPassword(modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordField() {
+fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
-        value = "",
-        onValueChange = {},
+        value = password,
+        onValueChange = {onTextFieldChanged(it)},
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
@@ -111,10 +116,10 @@ fun PasswordField() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailField() {
+fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
-        value = "",
-        onValueChange = {},
+        value = email,
+        onValueChange = {onTextFieldChanged(it)},
         modifier = Modifier.fillMaxWidth(),
         placeholder = {
             Text(
