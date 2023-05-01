@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -47,6 +50,27 @@ fun Login(modifier: Modifier) {
         PasswordField()
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
+        Spacer(modifier = Modifier.padding(8.dp))
+        LoginButton()
+    }
+}
+
+@Composable
+fun LoginButton() {
+    Button(
+        onClick = { /*TODO*/ },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF3F51B5),
+            disabledContainerColor = Color(0xFFFFFFFF),
+            contentColor = Color.White,
+            disabledContentColor = Color.White
+        )
+
+    ) {
+        Text(text = "Log in")
     }
 }
 
@@ -57,7 +81,7 @@ fun ForgotPassword(modifier: Modifier) {
         modifier = modifier.clickable {  },
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
-        color = Color(0xFF112ECE)
+        color = Color(0xFF3F51B5)
     )
 }
 
@@ -78,7 +102,7 @@ fun PasswordField() {
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFF000000),
-            containerColor = Color(0xFF2E82E9),
+            containerColor = Color(0xFF3F51B5),
             //focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         )
