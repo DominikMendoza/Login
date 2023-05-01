@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.zen.login.ui.login.ui.LoginScreen
 import com.zen.login.ui.login.ui.LoginViewModel
+import com.zen.login.ui.login.ui.SignUpViewModel
+import com.zen.login.ui.login.ui.SingUpScreen
 import com.zen.login.ui.theme.LoginTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,8 +26,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen(LoginViewModel())
+                    //LoginScreen(LoginViewModel())
                     //Greeting("Android")
+                    SingUpScreen(viewModel = SignUpViewModel())
                 }
             }
         }
