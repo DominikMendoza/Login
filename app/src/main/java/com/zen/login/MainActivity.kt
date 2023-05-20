@@ -26,9 +26,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //LoginScreen(LoginViewModel())
+                    LoginScreen(LoginViewModel())
                     //Greeting("Android")
-                    SingUpScreen(viewModel = SignUpViewModel())
+                    //SingUpScreen(viewModel = SignUpViewModel())
                 }
             }
         }

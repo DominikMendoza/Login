@@ -51,8 +51,25 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
     val password :String by viewModel.password.observeAsState(initial = "")
     val loginEnabled :Boolean by viewModel.loginEnabled.observeAsState(initial = false)
     val isLoading :Boolean by viewModel.isLoading.observeAsState(initial = false)
+    val token :String by viewModel.token.observeAsState(initial = "")
     val coroutineScope = rememberCoroutineScope()
 
+    Column(modifier = modifier) {
+        Text(text = token)
+        HeaderImage(Modifier.align(Alignment.CenterHorizontally))
+        Spacer(modifier = Modifier.padding(16.dp))
+        EmailField(email) { viewModel.onLoginChanged(it, password) }
+        Spacer(modifier = Modifier.padding(8.dp))
+        PasswordField(password) { viewModel.onLoginChanged(email, it) }
+        Spacer(modifier = Modifier.padding(8.dp))
+        ForgotPassword(Modifier.align(Alignment.End))
+        Spacer(modifier = Modifier.padding(8.dp))
+        LoginButton(loginEnabled) {
+                viewModel.onLoginClicked()
+        }
+    }
+
+    /*
     if (isLoading) {
         Box(
             Modifier
@@ -63,6 +80,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         }
     } else {
         Column(modifier = modifier) {
+            Text(text = token)
             HeaderImage(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(16.dp))
             EmailField(email) { viewModel.onLoginChanged(it, password) }
@@ -77,7 +95,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
                 }
             }
         }
-    }
+    }*/
 }
 
 @Composable
